@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Limelight">
+    <style>
+        body 
+        {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar 
+        {
+            width: 100%;
+            min-height: 65px;
+            background-color: #2E8B57;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            z-index: 1045;
+            position: fixed;         
+            top: 0;                 
+            left: 0;
+            right: 0;
+        }
+
+        .left-icons 
+        {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-heading 
+        {
+            font-size: 25px;
+            font-family: Limelight;
+        }
+        .sidebar 
+        {
+            width: 250px;
+            background-color:#3C9C6E;
+            color: white;
+            position: fixed;
+            top: 65px;
+            z-index: 1030;
+            bottom: 0;
+            left: 0;
+            padding: 1rem; 
+        }
+
+        .search-bar 
+        {
+            flex-grow: 1;
+            width: 50px;
+            max-width:400px;
+            margin: 0 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-bar input 
+        {
+            width: 100%;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .right-icons 
+        {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .profilebar 
+        {
+            width: 250px;
+            position: fixed;
+            top: 65px;
+            z-index: 1030;
+            bottom: 0;
+            right:0;
+            left: auto;
+            padding: 1rem; 
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+            background-color: #d2f2e1;
+            color: #2E8B57;
+        }
+        
+        .profilebar.show 
+        {
+            transform: translateX(0%);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <!-- LEFT PART -->
+        <div class="left-icons">
+            <div>
+                <button class="btn text-white d-md-none" id="togglebtn" onclick="displaysidebar()" >
+                    <i class="bi bi-list fs-5"></i>
+                </button>
+            </div>
+            <div class="navbar-heading">PlantX</div>
+        </div>
+        <!-- side bar -->
+        <div class="sidebar d-none d-md-block" id="sidebar">
+            <ul class="list-unstyled">
+                <li><a href="#" class="text-white text-decoration-none">Home</a></li>
+                <li><a href="#" class="text-white text-decoration-none">Explore</a></li>
+                <li><a href="#" class="text-white text-decoration-none">My Plants</a></li>
+            </ul>
+        </div>
+        <!-- search section -->
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <i class="bi bi-search"></i>
+        </div>
+        <!-- right part -->
+        <div class="right-icons">
+            <div class="icon">
+                <button class="btn text-white" id="infobtn" onclick="infobtn()">
+                    <i class="bi bi-person-circle fs-5"></i>
+                </button>
+            </div>
+        </div>
+        <div class="profilebar" id="profilebar">
+            <ul class="list-unstyled">
+                <li><a href="#" class="text-decoration-none">Add Plants</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <script>
+        function displaysidebar()
+        {
+            const sidebar=document.getElementById('sidebar')
+            const profilebar=document.getElementById('profilebar')
+            if (window.innerWidth < 768) 
+            {
+                sidebar.classList.toggle('d-none');
+                profilebar.classList.remove('show'); 
+                
+            }
+        }
+        function infobtn()
+        {
+            const profilebar=document.getElementById('profilebar')
+            const sidebar=document.getElementById('sidebar')
+            profilebar.classList.toggle('show');
+            if (profilebar.classList.contains('show')) 
+            {
+                sidebar.classList.add('d-none'); 
+            } 
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+</body>
+</html>
