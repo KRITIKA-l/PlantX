@@ -15,7 +15,7 @@
         }
 
         .navbar 
-        {
+        {                                                                                                                        
             width: 100%;
             min-height: 65px;
             background-color: #2E8B57;
@@ -107,7 +107,15 @@
             background-color: #d2f2e1;
             color: #2E8B57;
         }
-        
+        .profilebar a.active 
+        {
+            background-color: #267a4d;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 8px;
+            display: block;
+            border-radius: 5px;
+        }
         .profilebar.show 
         {
             transform: translateX(0%);
@@ -148,7 +156,7 @@
         </div>
         <div class="profilebar" id="profilebar">
             <ul class="list-unstyled">
-                <li><a href="#" class="text-decoration-none">Add Plants</a></li>
+                <li><a href="{% url 'home' %}" class="text-decoration-none">Add Plants</a></li>
             </ul>
         </div>
     </div>
@@ -177,10 +185,37 @@
             } 
         }
 
-       const currentPath = window.location.pathname;
-        document.querySelectorAll('.sidebar a').forEach(link => {
-            if (link.getAttribute('href') === currentPath) {
+        const currentPath = window.location.pathname.replace(/\/$/, '');
+        document.querySelectorAll('.sidebar a').forEach(link => 
+        {
+            const linkPath = link.getAttribute('href').replace(/\/$/, '');
+            if (linkPath === currentPath) 
+            {
                 link.classList.add('active');
+            }
+        });
+
+        document.querySelectorAll('.profilebar a').forEach(link => 
+        {
+            const linkPath = link.getAttribute('href').replace(/\/$/, '');
+            if (linkPath === currentPath) 
+            {
+                link.classList.add('active');
+            }
+        });
+
+        document.addEventListener('click', function (event) 
+        {
+            const profilebar = document.getElementById('profilebar');
+            const infobtn = document.getElementById('infobtn');
+
+            if (profilebar.classList.contains('show')) 
+            {
+           
+                if (!profilebar.contains(event.target) && !infobtn.contains(event.target)) 
+                {
+                    profilebar.classList.remove('show');
+                }
             }
         });
     </script>
