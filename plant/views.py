@@ -9,3 +9,6 @@ def explore(request):
 
 def myplants(request):
     return render(request,'plant/myplants.html')
+
+def addplant(request):
+    return render(request,'plant/addplant.html')

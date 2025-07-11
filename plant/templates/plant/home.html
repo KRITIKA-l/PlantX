@@ -10,8 +10,9 @@
     <style>
         .main-content 
         {
-            padding-top: 80px; 
-            margin-left: 300px;
+            padding-top: 90px; 
+            margin-left: 270px;
+            margin-right: 20px;
         }
 
         @media (max-width: 765px) 
@@ -28,7 +29,32 @@
     {% include 'plant/navbar.html' %}
 
     <div class="main-content">
-        <h2>Welcome to PlantX 🌿</h2>
+        <h2 class="mb-2">"Bring Your Plants to Life — One Leaf at a Time."🌿</h2>
+        <p>Track, care, and grow with PlantX — your digital garden companion.</p>
+        <a href="{% url 'explore' %}" class="btn btn-success mt-3">
+            Explore Plants 🌱
+        </a>
+        <p class="text-muted mt-1 small">
+            Not sure where to start? Let’s grow together.
+        </p>
+
+        <h3 class="mb-4 mt-2">🧭 Start Caring Smarter</h3>
+        <div class="d-flex flex-column gap-3">
+            <a href="{% url 'addplant' %}" class="btn btn-outline-success text-start ">
+                ➕ <strong>Add Your First Plant</strong><br>
+                <small>Give your green buddy a name and space.</small>
+            </a>
+
+            <a href="{% url 'explore' %}" class="btn btn-outline-success text-start">
+                🔍 <strong>Explore Plants</strong><br>
+                <small>Find care tips tailored to each plant.</small>
+            </a>
+
+            <a href="{% url 'myplants' %}" class="btn btn-outline-success text-start">
+                📋 <strong>My Plants</strong><br>
+                <small>Check progress and track their needs.</small>
+            </a>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 </body>

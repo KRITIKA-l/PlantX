@@ -22,4 +22,5 @@ urlpatterns = [
     path('',views.home,name='home'),
     path('explore',views.explore,name='explore'),
     path('myplants',views.myplants,name='myplants'),
+    path('addplant',views.addplant,name='addplant'),
 ]
