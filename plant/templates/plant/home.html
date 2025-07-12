@@ -28,24 +28,26 @@
             opacity: 0;
             transition: 0.3s ease;
         }
-        </style>
+    </style>
 </head>
 <body >
     <!-- navbar section -->
     {% include 'plant/navbar.html' %}
 
     <div class="container-fluid mt-2 p-3 p-md-4 p-lg-8">
+        <!-- heading -->
         <h2 class="mb-2">"Bring Your Plants to Life — One Leaf at a Time."🌿</h2>
-        <p>Track, care, and grow with PlantX — your digital garden companion.</p>
+        <p>Track, care, and grow with <strong>PlantX</strong> — your digital garden companion.</p>
+        <!-- start -->
         <a href="{% url 'explore' %}" class="btn btn-success mt-3">
             Explore Plants 🌱
         </a>
         <p class="text-muted mt-1 small">
             Not sure where to start? Let’s grow together.
         </p>
-
+        <!-- quick options -->
         <h2 class="mb-4 mt-4">Start Caring Smarter</h2>
-        <div class="d-flex flex-column gap-3">
+        <div class="d-flex flex-lg-row flex-column gap-3">
             <a href="{% url 'addplant' %}" class="btn btn-outline-success text-start ">
                 ➕ <strong>Add Your First Plant</strong><br>
                 <small>Give your green buddy a name and space.</small>
@@ -60,6 +62,7 @@
                 📋 <strong>My Plants</strong><br>
                 <small>Check progress and track their needs.</small>
             </a>
+        <!-- tips -->
         </div>
         <div class="alert alert-success mt-5 text-center">
             <h2>🌱 Leafy Little Lessons</h2>

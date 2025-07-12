@@ -26,6 +26,7 @@ urlpatterns = [
     path('explore',views.explore,name='explore'),
     path('myplants',views.myplants,name='myplants'),
     path('addplant',views.addplant,name='addplant'),
+    path('plant/<str:plant_id>/', views.plantdetails, name='plantdetails'),
 ]
 
 if settings.DEBUG:
