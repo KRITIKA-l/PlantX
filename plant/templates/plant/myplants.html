@@ -8,9 +8,41 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Limelight">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <!-- navbar section -->
     {% include 'plant/navbar.html' %}
+
+    <div class="container mt-2 p-2">
+        <div class="alert alert-success text-center">
+            <h2>🌱My Plants 🌱</h2>
+        </div>
+        {% if userplant %}
+            <div class="container row flex-grow-1">
+                {% for plant in userplant %}
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                        <a href="{% url 'myplantinfo' plant.id %}" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-sm">
+                                {% if plant.custom_image %}
+                                <img src="{{ plant.custom_image.url }}" class="card-img-top" alt="{{ plant.nickname }}" style="height: 250px; object-fit: cover;">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ plant.nickname }}</h5>
+                                    <p class="card-text">{{ plant.plant_type }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+                </div>
+                {% else %}
+                    <p class="text-center text-muted">No plants added yet. 🌿</p>
+            {% endif %}
+        </div>
+    </div>
+
+   <br>
+    <!-- footer section -->
+    {% include 'plant/footer.html' %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 </body>
 </html>

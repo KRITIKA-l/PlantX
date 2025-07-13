@@ -24,9 +24,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home,name='home'),
     path('explore',views.explore,name='explore'),
-    path('myplants',views.myplants,name='myplants'),
-    path('addplant',views.addplant,name='addplant'),
     path('plant/<str:plant_id>/', views.plantdetails, name='plantdetails'),
+
+    path('myplants',views.myplants,name='myplants'),
+    path('myplants/<int:userplant_id>/', views.myplantinfo, name='myplantinfo'),
+    path('addplant',views.addplant,name='addplant'),
+
     path('loginuser/',views.loginuser,name='loginuser'),
     path('signupuser/',views.signupuser,name='signupuser'),
     path('logoutuser/',views.logoutuser,name='logoutuser'),

@@ -52,6 +52,7 @@ class userplant(models.Model):
         ('Dead', 'Dead'),
     ]
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     # Core plant details
     nickname = models.CharField(max_length=100, blank=True)
     plant_type = models.CharField(max_length=50, choices=PLANT_TYPES, blank=True)
@@ -83,5 +84,5 @@ class userplant(models.Model):
     notes = models.TextField(blank=True, help_text="Any additional notes – observations, reminders, or tips.")
 
     def __str__(self):
-        return self.nickname or "Unnamed Plant"
+        return self.nickname or self.user.username
 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myplants Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Limelight">
+</head>
+<body>
+    <!-- navbar section -->
+    {% include 'plant/navbar.html' %}
+    
+
+    <div class="container mt-5 p-3">
+        <div class="alert alert-success text-center">
+            <h2>{{ plant.nickname|default:"Unnamed Plant" }}</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                {% if plant.custom_image %}
+                    <img src="{{ plant.custom_image.url }}" class="img-fluid rounded" alt="{{ plant.nickname }}">
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Type:</strong> {{ plant.plant_type }}</li>
+                    <li class="list-group-item"><strong>Sunlight:</strong> {{ plant.sunlight_available }}</li>
+                    <li class="list-group-item"><strong>Humidity:</strong> {{ plant.humidity }}</li>
+                    <li class="list-group-item"><strong>Temperature:</strong> {{ plant.temperature_preference }}</li>
+                    <li class="list-group-item"><strong>Watering Freq:</strong> {{ plant.watering_frequency }} days</li>
+                    <li class="list-group-item"><strong>Last Watered:</strong> {{ plant.last_watered }}</li>
+                    <li class="list-group-item"><strong>Fertilizing Freq:</strong> {{ plant.fertilizing_frequency }} days</li>
+                    <li class="list-group-item"><strong>Last Fertilized:</strong> {{ plant.last_fertilized }}</li>
+                    <li class="list-group-item"><strong>Height:</strong> {{ plant.height_cm }} cm</li>
+                    <li class="list-group-item"><strong>Flowering:</strong> {{ plant.is_flowering|yesno:"Yes,No" }}</li>
+                    <li class="list-group-item"><strong>Fruiting:</strong> {{ plant.is_fruiting|yesno:"Yes,No" }}</li>
+                    <li class="list-group-item"><strong>Status:</strong> {{ plant.current_status }}</li>
+                    <li class="list-group-item"><strong>Source:</strong> {{ plant.source }}</li>
+                    <li class="list-group-item"><strong>Notes:</strong> {{ plant.notes }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% include 'plant/footer.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+</body>
+</html>

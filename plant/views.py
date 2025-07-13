@@ -17,21 +17,6 @@ def explore(request):
     plants = plantinfo.objects.all()
     return render(request, 'plant/explore.html', {'plants': plants})
 
-@login_required(login_url='loginuser')
-def myplants(request):
-    return render(request,'plant/myplants.html')
-
-@login_required(login_url='loginuser')
-def addplant(request):
-    if request.method == 'POST':
-        form = UserPlantForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save() 
-            return redirect('myplants') 
-    else:
-        form = UserPlantForm() 
-        return render(request, 'plant/addplant.html', {'form': form})
-
 def plantdetails(request, plant_id):
     plant = get_object_or_404(plantinfo, plant_id=plant_id)
     processed_plants = {
@@ -41,6 +26,29 @@ def plantdetails(request, plant_id):
         'content': markdown.markdown(plant.plant_desc)
     }
     return render(request, 'plant/plantinfo.html', {'plant': processed_plants})
+
+@login_required(login_url='loginuser')
+def addplant(request):
+    if request.method == 'POST':
+        form = UserPlantForm(request.POST, request.FILES)
+        if form.is_valid():
+            plant = form.save(commit=False)
+            plant.user = request.user
+            plant.save() 
+            return redirect('myplants')
+    else:
+        form = UserPlantForm() 
+    return render(request, 'plant/addplant.html', {'form': form})
+
+@login_required(login_url='loginuser')
+def myplants(request):
+    user_plant = userplant.objects.all().filter(user=request.user)
+    return render(request, 'plant/myplants.html', {'userplant': user_plant})
+
+@login_required
+def myplantinfo(request, userplant_id):
+    plant = get_object_or_404(userplant, id=userplant_id, user=request.user)
+    return render(request, 'plant/myplantinfo.html', {'plant': plant})
 
 def loginuser(request):
     if request.method=='GET':

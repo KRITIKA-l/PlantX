@@ -4,7 +4,7 @@ from .models import userplant
 class UserPlantForm(forms.ModelForm):
     class Meta:
         model = userplant
-        fields = '__all__' 
+        exclude = ['user']
 
         widgets = {
             'planted_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
