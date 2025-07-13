@@ -27,6 +27,9 @@ urlpatterns = [
     path('myplants',views.myplants,name='myplants'),
     path('addplant',views.addplant,name='addplant'),
     path('plant/<str:plant_id>/', views.plantdetails, name='plantdetails'),
+    path('loginuser/',views.loginuser,name='loginuser'),
+    path('signupuser/',views.signupuser,name='signupuser'),
+    path('logoutuser/',views.logoutuser,name='logoutuser'),
 ]
 
 if settings.DEBUG:
