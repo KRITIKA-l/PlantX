@@ -34,13 +34,13 @@
 <body>
     <!-- navbar section -->
     {% include 'plant/navbar.html' %}
-    <div class="container-fluid mt-2 p-3 p-md-4 p-lg-8">
-        <div class="alert alert-success mt-5 text-center">
+    <div class="container mt-2 p-2">
+        <div class="alert alert-success text-center">
             <h2>🌱Explore Plant World 🌱</h2>
         </div>
         <div class="row">
             {% for x in plants %}
-            <div class="col-lg-4 col-md-6 col-12 mt-2">
+            <div class="col-lg-4 col-md-6 col-12 mt-1">
                 <a href="{% url 'plantdetails' plant_id=x.plant_id %}" class="text-decoration-none">
                     <div class="card text-white position-relative overflow-hidden mt-2 w-100 image-container" style="width: 25rem; cursor: pointer;">
                         <img src="{{x.plant_img.url}}" class="card-img-top img-fluid hover-img" style="max-height: 500px; max-width: 100%;" alt="{{x.name}}">
@@ -53,6 +53,10 @@
             {% endfor %}
         </div>
     </div>
+
+   <br>
+    <!-- footer section -->
+    {% include 'plant/footer.html' %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 </body>
 </html>

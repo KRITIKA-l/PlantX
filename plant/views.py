@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
-from .models import tips,plantinfo
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import tips,plantinfo,userplant
 import markdown
+from .forms import UserPlantForm
 
 # Create your views here.
 def home(request):
@@ -16,7 +17,14 @@ def myplants(request):
     return render(request,'plant/myplants.html')
 
 def addplant(request):
-    return render(request,'plant/addplant.html')
+    if request.method == 'POST':
+        form = UserPlantForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save() 
+            return redirect('myplants') 
+    else:
+        form = UserPlantForm() 
+        return render(request, 'plant/addplant.html', {'form': form})
 
 def plantdetails(request, plant_id):
     plant = get_object_or_404(plantinfo, plant_id=plant_id)
