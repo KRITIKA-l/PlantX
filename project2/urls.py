@@ -26,6 +26,7 @@ urlpatterns = [
     path('explore',views.explore,name='explore'),
     path('plant/<str:plant_id>/', views.plantdetails, name='plantdetails'),
 
+    path('navbar',views.navbar,name='navbar'),
     path('myplants',views.myplants,name='myplants'),
     path('myplants/<int:userplant_id>/', views.myplantinfo, name='myplantinfo'),
     path('addplant',views.addplant,name='addplant'),
@@ -33,6 +34,7 @@ urlpatterns = [
     path('loginuser/',views.loginuser,name='loginuser'),
     path('signupuser/',views.signupuser,name='signupuser'),
     path('logoutuser/',views.logoutuser,name='logoutuser'),
+    path('findproducts',views.findproducts,name='findproducts'),
 ]
 
 if settings.DEBUG:

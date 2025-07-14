@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +25,8 @@
                             <div class="card h-100 shadow-sm">
                                 {% if plant.custom_image %}
                                 <img src="{{ plant.custom_image.url }}" class="card-img-top" alt="{{ plant.nickname }}" style="height: 250px; object-fit: cover;">
+                                {% else %}
+                                <img src="{% static 'plant/bg4.jpg' %}" class="card-img-top" alt="{{ plant.nickname }}" style="height: 250px; object-fit: cover;">
                                 {% endif %}
                                 <div class="card-body">
                                     <h5 class="card-title">{{ plant.nickname }}</h5>
@@ -35,7 +38,10 @@
                 {% endfor %}
                 </div>
                 {% else %}
-                    <p class="text-center text-muted">No plants added yet. 🌿</p>
+                    <p class="text-center text-muted">🌿 No plants added yet. 🌿</p>
+                    <div class="text-center">
+                        <a href="{% url 'addplant' %}" class="btn btn-outline-success">➕ Add Plant</a>
+                    </div>
             {% endif %}
         </div>
     </div>

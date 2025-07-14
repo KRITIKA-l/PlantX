@@ -6,6 +6,7 @@ from django.contrib.auth.forms import AuthenticationForm , UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 # Create your views here.
 def home(request):
@@ -42,10 +43,13 @@ def addplant(request):
 
 @login_required(login_url='loginuser')
 def myplants(request):
-    user_plant = userplant.objects.all().filter(user=request.user)
-    return render(request, 'plant/myplants.html', {'userplant': user_plant})
+    return render(request, 'plant/myplants.html')
 
-@login_required
+@login_required(login_url='loginuser')
+def navbar(request):
+    return render(request, 'plant/navbar.html')
+
+
 def myplantinfo(request, userplant_id):
     plant = get_object_or_404(userplant, id=userplant_id, user=request.user)
     return render(request, 'plant/myplantinfo.html', {'plant': plant})
@@ -85,3 +89,13 @@ def logoutuser(request):
     if request.method=='GET':
         logout(request)
         return(redirect('home'))
+    
+def findproducts(request):
+    if request.method=='POST':
+        x=request.POST.get('prod_search')
+        print(x)
+        mydata=product.objects.filter(Q(product_name__icontains=x)or Q(product_category__icontains=x)or Q(product_type__icontains=x))
+        if mydata:
+            return render(request,'test1/home.html',{'product_info':mydata})
+        else:
+            return render(request,'test1/home.html',{'warning':'No Record Found'})

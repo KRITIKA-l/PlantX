@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,20 +14,20 @@
     {% include 'plant/navbar.html' %}
     
 
-    <div class="container mt-5 p-3">
+    <div class="container mt-2 p-3">
         <div class="alert alert-success text-center">
             <h2>{{ plant.nickname|default:"Unnamed Plant" }}</h2>
         </div>
 
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 mt-2">
                 {% if plant.custom_image %}
                     <img src="{{ plant.custom_image.url }}" class="img-fluid rounded" alt="{{ plant.nickname }}">
                 {% else %}
-                    <p>No image available</p>
+                    <img src="{% static 'plant/bg4.jpg' %}" class="card-img-top rounded" alt="{{ plant.nickname }}" style="height: 550px; object-fit: cover;">
                 {% endif %}
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 mt-2">
                 <ul class="list-group">
                     <li class="list-group-item"><strong>Type:</strong> {{ plant.plant_type }}</li>
                     <li class="list-group-item"><strong>Sunlight:</strong> {{ plant.sunlight_available }}</li>
@@ -45,6 +46,9 @@
                 </ul>
             </div>
         </div>
+        <a href="{% url 'myplants' %}" class="btn btn-success mt-3">
+            <i class="bi bi-arrow-left-circle"></i> Back to My Plants
+        </a>
     </div>
     {% include 'plant/footer.html' %}
 
