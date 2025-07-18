@@ -30,11 +30,11 @@
         }
     </style>
 </head>
-<body >
+<body class="d-flex flex-column min-vh-100">
     <!-- navbar section -->
     {% include 'plant/navbar.html' %}
 
-    <div class="container mt-2">
+    <div class="container mt-1 flex-grow-1">
         {% if tipsdata %}
             <div class="alert alert-success text-center">
                 <h2>🌱 Leafy Little Lessons</h2>
@@ -42,7 +42,7 @@
             </div>
             <div class="row">
                 {% for x in tipsdata %}
-                <div class="col-lg-4 col-md-6 col-12 mt-2">
+                <div class="col-lg-4 col-md-6 col-12">
                     <div class="card text-white position-relative overflow-hidden mt-2 w-100" style="cursor: pointer;">
                         <div class="image-container position-relative" data-bs-toggle="modal" data-bs-target="#tipModal{{ forloop.counter }}">
                             <img src="{{x.tip_img.url}}" class="card-img-top img-fluid hover-img" style="max-height: 400px; max-width: 100%;" alt="image">
@@ -70,6 +70,7 @@
             </div>
         {% endif %}
 
+        <br>
         <!-- Explore Plants Section -->
         {% if plantdata %}
             <div class="alert alert-success text-center">
@@ -91,14 +92,15 @@
             </div>
         {% endif %}
 
+        
         <!-- My Plants Section -->
         {% if userdata %}
-        <div class="alert alert-success text-center">
+        <div class="alert alert-success text-center mt-2">
             <h2>🌱My Plants 🌱</h2>
         </div>
         <div class="container row flex-grow-1">
             {% for plant in userplant %}
-            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="col-lg-4 col-md-6 col-sm-12">
                 <a href="{% url 'myplantinfo' plant.id %}" class="text-decoration-none text-dark">
                     <div class="card h-100 shadow-sm">
                         {% if plant.custom_image %}
