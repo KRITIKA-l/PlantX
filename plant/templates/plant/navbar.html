@@ -157,10 +157,11 @@
             </ul>
         </div>
         <!-- search section -->
-        <div class="search-bar">
-            <input type="text" placeholder="Search...">
-            <a href="" class="btn text-white"><i class="bi bi-search"></i></a>
-        </div>
+        <form class="search-bar" role="search" method="post" action="{% url 'findproducts' %}">
+            {% csrf_token %}
+            <input type="text" placeholder="Search" name="prod_search">
+            <button type="submit" class="btn btn-outline-light"><i class="bi bi-search"></i></button>
+        </form>
         <!-- right part -->
         <div class="right-icons">
             <div class="icon">
@@ -201,9 +202,6 @@
             {% endif %}           
         </div>
     </div>
-
-    
-
 
     <script>
         function displaysidebar()

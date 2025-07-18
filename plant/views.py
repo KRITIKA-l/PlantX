@@ -91,11 +91,19 @@ def logoutuser(request):
         return(redirect('home'))
     
 def findproducts(request):
-    if request.method=='POST':
-        x=request.POST.get('prod_search')
-        print(x)
-        mydata=product.objects.filter(Q(product_name__icontains=x)or Q(product_category__icontains=x)or Q(product_type__icontains=x))
-        if mydata:
-            return render(request,'test1/home.html',{'product_info':mydata})
+    if request.method == 'POST':
+        x = request.POST.get('prod_search', '')
+        tipsdata = tips.objects.filter(Q(tip_name__icontains=x) | Q(tip_desc__icontains=x))
+        plantdata = plantinfo.objects.filter(Q(plant_name__icontains=x))
+        userdata = userplant.objects.filter(Q(nickname__icontains=x) | Q(notes__icontains=x))
+        tips_info=tips.objects.all()
+        if x:
+            return render(request, 'plant/search.html', {
+                'tipsdata': tipsdata,
+                'plantdata': plantdata,
+                'userdata': userdata,
+            })
+        elif x == '':
+            return render(request,'plant/home.html',{'tips_info':tips_info})
         else:
-            return render(request,'test1/home.html',{'warning':'No Record Found'})
+            return render(request, 'plant/search.html', {'warning': "No Record Found"})

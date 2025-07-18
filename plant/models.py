@@ -21,9 +21,6 @@ class plantinfo(models.Model):
     def __str__(self):
         return self.plant_name
 
-from django.db import models
-from datetime import date
-
 class userplant(models.Model):
     # Dropdown options
     PLANT_TYPES = [
