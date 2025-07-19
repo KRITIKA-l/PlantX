@@ -39,7 +39,7 @@
             <h2>🌱Explore Plant World 🌱</h2>
         </div>
         <div class="row">
-            {% for x in plants %}
+            {% for x in page_obj %}
             <div class="col-lg-4 col-md-6 col-12 mt-1">
                 <a href="{% url 'plantdetails' plant_id=x.plant_id %}" class="text-decoration-none">
                     <div class="card text-white position-relative overflow-hidden mt-2 w-100 image-container" style="width: 25rem; cursor: pointer;">
@@ -51,6 +51,23 @@
                 </a>
             </div>
             {% endfor %}
+        </div>
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
         </div>
     </div>
 

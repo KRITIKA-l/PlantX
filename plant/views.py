@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 # Create your views here.
 def home(request):
@@ -16,7 +17,11 @@ def home(request):
 
 def explore(request):
     plants = plantinfo.objects.all()
-    return render(request, 'plant/explore.html', {'plants': plants})
+    paginator = Paginator(plants, 3)
+
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'plant/explore.html', {"page_obj": page_obj})
 
 def plantdetails(request, plant_id):
     plant = get_object_or_404(plantinfo, plant_id=plant_id)
@@ -48,7 +53,6 @@ def myplants(request):
 @login_required(login_url='loginuser')
 def navbar(request):
     return render(request, 'plant/navbar.html')
-
 
 def myplantinfo(request, userplant_id):
     plant = get_object_or_404(userplant, id=userplant_id, user=request.user)
