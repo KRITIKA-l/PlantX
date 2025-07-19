@@ -151,7 +151,4 @@ def profile(request):
             profile.user_dp = request.FILES['user_dp']
         profile.save()
 
-    return render(request, 'plant/profile.html', {
-        'user': request.user,
-        'profile': profile
-    })
+    return render(request, 'plant/profile.html', {'user': request.user,'profile': profile})
