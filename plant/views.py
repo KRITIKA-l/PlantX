@@ -10,7 +10,8 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.conf import settings
 import requests 
-
+from django.utils.timezone import localdate
+import datetime
 # Create your views here.
 def home(request):
     tips_info=tips.objects.all()
@@ -152,3 +153,38 @@ def profile(request):
         profile.save()
 
     return render(request, 'plant/profile.html', {'user': request.user,'profile': profile})
+
+@login_required
+def update_last_watered(request, plant_id):
+    if request.method == 'POST':
+        plant = get_object_or_404(userplant, id=plant_id, user=request.user)
+        plant.last_watered = localdate()
+        plant.save()
+        return redirect('myplantinfo', userplant_id=plant.id)
+
+@login_required
+def update_last_fertilized(request, plant_id):
+    if request.method == 'POST':
+        plant = get_object_or_404(userplant, id=plant_id, user=request.user)
+        plant.last_fertilized = localdate()
+        plant.save()
+        return redirect('myplantinfo', userplant_id=plant.id)
+
+@login_required
+def update_custom_date(request, plant_id):
+    if request.method == 'POST':
+        custom_date_str = request.POST.get('custom_date')
+        action = request.POST.get('action')
+        plant = get_object_or_404(userplant, id=plant_id, user=request.user)
+
+        if custom_date_str:
+            custom_date = datetime.strptime(custom_date_str, "%Y-%m-%d").date()
+
+            if action == 'watered':
+                plant.last_watered = custom_date
+            elif action == 'fertilized':
+                plant.last_fertilized = custom_date
+
+            plant.save()
+
+        return redirect('myplantinfo', userplant_id=plant.id)

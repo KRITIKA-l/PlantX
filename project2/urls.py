@@ -37,6 +37,9 @@ urlpatterns = [
     path('findproducts',views.findproducts,name='findproducts'),
     path('notifications',views.notifications,name='notifications'),
     path('profile',views.profile,name='profile'),
+    path('update-water/<int:plant_id>/', views.update_last_watered, name='update_last_watered'),
+    path('update-fertilized/<int:plant_id>/', views.update_last_fertilized, name='update_last_fertilized'),
+    path('plant/<int:plant_id>/update_custom_date/', views.update_custom_date, name='update_custom_date'),
 ]
 
 if settings.DEBUG:

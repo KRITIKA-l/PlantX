@@ -26,6 +26,29 @@
                 {% else %}
                     <img src="{% static 'plant/bg4.jpg' %}" class="card-img-top rounded" alt="{{ plant.nickname }}" style="height: 550px; object-fit: cover;">
                 {% endif %}
+
+                <div class="row mt-2">
+                    <form class="col-md-6 mt-2" method="post" action="{% url 'update_last_watered' plant.id %}" class="mt-2">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-success">Update Last Watered (Today)</button>
+                    </form>
+
+                    <form class="col-md-6 mt-2 mb-2" method="post" action="{% url 'update_last_fertilized' plant.id %}" class="mt-2">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-success"> Update Last Fertilized(Today)</button>
+                    </form>
+                </div>
+
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="custom_date">Select Date:</label>
+                    <input type="date" name="custom_date" id="custom_date" class="form-control mb-3" required>
+
+                    <button  type="submit" name="action" value="watered" class="btn btn-outline-secondary">Set Watering Date</button>
+                    <button  type="submit" name="action" value="fertilized" class="btn btn-outline-secondary">Set Fertilizing Date</button>
+                </form>
+                
             </div>
             <div class="col-md-6 mt-2">
                 <ul class="list-group">
@@ -46,6 +69,8 @@
                 </ul>
             </div>
         </div>
+
+
         <a href="{% url 'myplants' %}" class="btn btn-success mt-3">
             <i class="bi bi-arrow-left-circle"></i> Back to My Plants
         </a>
