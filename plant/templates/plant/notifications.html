@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    {% include 'plant/navbar.html' %}
+    <br><br><br>
+    <div class="container mt-2 p-2">
+        <h2>Hello, {{ user.username }}!</h2>
+        <p>Current city: <strong>{{ city }}</strong></p>
+        <p>Weather: <strong>{{ weather.main }}</strong> | Temperature: {{ weather.temp }}°C</p>
+
+        <h4 class="mt-4">🌿 Plant Care Tips</h4>
+        <ul>
+            {% if weather.main == 'Rain' %}
+                <li>No watering needed today – it's raining!</li>
+                <li>Keep indoor plants away from open windows.</li>
+            {% elif weather.main == 'Clear' %}
+                <li>Perfect time to sunbathe your plants ☀️</li>
+                <li>Water in the early morning or evening.</li>
+            {% elif weather.main == 'Clouds' %}
+                <li>Moderate watering is okay today.</li>
+                <li>Move sun-loving plants to brighter spots.</li>
+            {% elif weather.main == 'Snow' %}
+                <li>Keep plants indoors and warm ❄️</li>
+                <li>Avoid watering too much.</li>
+            {% else %}
+                <li>General care: check soil moisture and clean leaves.</li>
+            {% endif %}
+        </ul>
+    </div>
+    <!-- footer section -->
+    {% include 'plant/footer.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+   
+</body>
+</html>

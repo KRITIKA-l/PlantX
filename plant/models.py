@@ -3,6 +3,17 @@ from datetime import date
 from django.contrib.auth.models import User
 
 # Create your models here.
+
+class userprofile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    password=models.CharField(max_length=500)
+    user_email=models.CharField(max_length=500, blank=True, null=True)
+    user_city=models.CharField(max_length=500)
+    user_dp=models.ImageField(upload_to='user_plants/', blank=True, null=True)
+
+    def __str__(self):
+        return str(self.user)
+
 class tips(models.Model):
     tip_id=models.CharField(max_length=50)
     tip_name=models.CharField(max_length=100)

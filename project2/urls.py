@@ -35,6 +35,8 @@ urlpatterns = [
     path('signupuser/',views.signupuser,name='signupuser'),
     path('logoutuser/',views.logoutuser,name='logoutuser'),
     path('findproducts',views.findproducts,name='findproducts'),
+    path('notifications',views.notifications,name='notifications'),
+    path('profile',views.profile,name='profile'),
 ]
 
 if settings.DEBUG:

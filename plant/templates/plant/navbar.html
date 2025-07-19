@@ -165,6 +165,9 @@
         <!-- right part -->
         <div class="right-icons">
             <div class="icon">
+                <button class="btn text-white" id="notifybtn">
+                    <a class='text-white' href="{% url 'notifications' %}"><i class="bi bi-bell-fill fs-5"></i></a>
+                </button>
                 <button class="btn text-white" id="infobtn" onclick="infobtn()">
                     <i class="bi bi-person-circle fs-5"></i>
                 </button>
@@ -175,6 +178,9 @@
                 <div>
                     <div class="mb-3 text-dark fw-bold fs-6">👋 Welcome, {{ user.username }}</div>
                     <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <a href="{% url 'profile' %}" class="btn btn-outline-success btn-sm w-100 text-start">Profile</a>
+                        </li>
                         <li class="mb-2">
                             <a href="{% url 'addplant' %}" class="btn btn-outline-success btn-sm w-100 text-start">➕ Add Plants</a>
                         </li>

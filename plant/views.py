@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import tips,plantinfo,userplant
+from .models import tips,plantinfo,userplant,userprofile
 import markdown
 from .forms import UserPlantForm
 from django.contrib.auth.forms import AuthenticationForm , UserCreationForm
@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.core.paginator import Paginator
+from django.conf import settings
+import requests 
 
 # Create your views here.
 def home(request):
@@ -78,12 +80,14 @@ def signupuser(request):
         a=request.POST.get('username')
         b=request.POST.get('password1')
         c=request.POST.get('password2')
+        d=request.POST.get('city')
         if(b==c):
             if(User.objects.filter(username=a).exists()):
                 return render(request,'plant/signupuser.html',{'error':'User Already Exists!'})
             else:
                 user=User.objects.create_user(username=a,password=b)
                 user.save()
+                userprofile.objects.create(user=user, user_city=d, password=b)
                 login(request,user)
                 return (redirect('home'))
         else:
@@ -111,3 +115,43 @@ def findproducts(request):
             return render(request,'plant/home.html',{'tips_info':tips_info})
         else:
             return render(request, 'plant/search.html', {'warning': "No Record Found"})
+        
+@login_required
+def notifications(request):
+    user_profile = userprofile.objects.get(user=request.user)
+    city = user_profile.user_city
+
+    api_key = settings.OPENWEATHER_API_KEY
+    url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric'
+
+    response = requests.get(url)
+    weather_data = response.json()
+
+    weather_main = weather_data['weather'][0]['main'] 
+    temp = weather_data['main']['temp']
+
+    context = {
+        'user': request.user,
+        'city': city,
+        'weather': {
+            'main': weather_main,
+            'temp': temp,
+        }
+    }
+    return render(request, 'plant/notifications.html', context)
+
+@login_required
+def profile(request):
+    profile = get_object_or_404(userprofile, user=request.user)
+
+    if request.method == 'POST':
+        profile.user_email = request.POST.get('user_email')
+        profile.user_city = request.POST.get('user_city')
+        if 'user_dp' in request.FILES:
+            profile.user_dp = request.FILES['user_dp']
+        profile.save()
+
+    return render(request, 'plant/profile.html', {
+        'user': request.user,
+        'profile': profile
+    })
