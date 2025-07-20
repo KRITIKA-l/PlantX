@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import tips,plantinfo,userplant,userprofile
+from .models import tips,plantinfo,userplant,userprofile,planthistory
 import markdown
 from .forms import UserPlantForm
 from django.contrib.auth.forms import AuthenticationForm , UserCreationForm
@@ -11,7 +11,8 @@ from django.core.paginator import Paginator
 from django.conf import settings
 import requests 
 from django.utils.timezone import localdate
-import datetime
+
+
 # Create your views here.
 def home(request):
     tips_info=tips.objects.all()
@@ -158,27 +159,32 @@ def profile(request):
 def update_last_watered(request, plant_id):
     if request.method == 'POST':
         plant = get_object_or_404(userplant, id=plant_id, user=request.user)
-        plant.last_watered = localdate()
+        today = localdate()
+        plant.last_watered = today
         plant.save()
+        planthistory.objects.create(plant=plant, date=today, action='watered')
         return redirect('myplantinfo', userplant_id=plant.id)
 
 @login_required
 def update_last_fertilized(request, plant_id):
     if request.method == 'POST':
         plant = get_object_or_404(userplant, id=plant_id, user=request.user)
-        plant.last_fertilized = localdate()
+        today=localdate()
+        plant.last_fertilized = today
         plant.save()
+        planthistory.objects.create(plant=plant, date=today, action='fertilized')
         return redirect('myplantinfo', userplant_id=plant.id)
 
 @login_required
 def update_custom_date(request, plant_id):
     if request.method == 'POST':
-        custom_date_str = request.POST.get('custom_date')
+        custom_date = request.POST.get('custom_date')
         action = request.POST.get('action')
         plant = get_object_or_404(userplant, id=plant_id, user=request.user)
 
-        if custom_date_str:
-            custom_date = datetime.strptime(custom_date_str, "%Y-%m-%d").date()
+        # print("Date:", custom_date_str)
+        # print("Action:", action)
+        if custom_date:
 
             if action == 'watered':
                 plant.last_watered = custom_date
@@ -186,5 +192,10 @@ def update_custom_date(request, plant_id):
                 plant.last_fertilized = custom_date
 
             plant.save()
-
+            planthistory.objects.create(plant=plant,date=custom_date,action=action)
         return redirect('myplantinfo', userplant_id=plant.id)
+    
+def history(request,userplant_id):
+    plant = get_object_or_404(userplant, id=userplant_id, user=request.user)
+    history = plant.history.all().order_by('-timestamp')
+    return render(request, 'plant/history.html', {'plant': plant, 'history': history})
