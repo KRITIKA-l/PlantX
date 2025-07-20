@@ -12,26 +12,31 @@
     <div class="container mt-2 p-2">
         <h2>Hello, {{ user.username }}!</h2>
         <p>Current city: <strong>{{ city }}</strong></p>
-        <p>Weather: <strong>{{ weather.main }}</strong> | Temperature: {{ weather.temp }}°C</p>
 
-        <h4 class="mt-4">🌿 Plant Care Tips</h4>
-        <ul>
-            {% if weather.main == 'Rain' %}
-                <li>No watering needed today – it's raining!</li>
-                <li>Keep indoor plants away from open windows.</li>
-            {% elif weather.main == 'Clear' %}
-                <li>Perfect time to sunbathe your plants ☀️</li>
-                <li>Water in the early morning or evening.</li>
-            {% elif weather.main == 'Clouds' %}
-                <li>Moderate watering is okay today.</li>
-                <li>Move sun-loving plants to brighter spots.</li>
-            {% elif weather.main == 'Snow' %}
-                <li>Keep plants indoors and warm ❄️</li>
-                <li>Avoid watering too much.</li>
-            {% else %}
-                <li>General care: check soil moisture and clean leaves.</li>
-            {% endif %}
-        </ul>
+        {% if weather %}
+            <p>Weather: <strong>{{ weather.main }}</strong> | Temperature: {{ weather.temp }}°C</p>
+
+            <h4 class="mt-4">🌿 Plant Care Tips</h4>
+            <ul>
+                {% if weather.main == 'Rain' %}
+                    <li>No watering needed today – it's raining!</li>
+                    <li>Keep indoor plants away from open windows.</li>
+                {% elif weather.main == 'Clear' %}
+                    <li>Perfect time to sunbathe your plants ☀️</li>
+                    <li>Water in the early morning or evening.</li>
+                {% elif weather.main == 'Clouds' %}
+                    <li>Moderate watering is okay today.</li>
+                    <li>Move sun-loving plants to brighter spots.</li>
+                {% elif weather.main == 'Snow' %}
+                    <li>Keep plants indoors and warm ❄️</li>
+                    <li>Avoid watering too much.</li>
+                {% else %}
+                    <li>General care: check soil moisture and clean leaves.</li>
+                {% endif %}
+            </ul>
+        {% else %}
+            <p class="text-danger">Weather information is currently unavailable. Please try again later.</p>
+        {% endif %}
     </div>
     <!-- footer section -->
     {% include 'plant/footer.html' %}

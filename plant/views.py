@@ -11,7 +11,7 @@ from django.core.paginator import Paginator
 from django.conf import settings
 import requests 
 from django.utils.timezone import localdate
-
+from django.contrib import messages
 
 # Create your views here.
 def home(request):
@@ -126,19 +126,25 @@ def notifications(request):
     api_key = settings.OPENWEATHER_API_KEY
     url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric'
 
-    response = requests.get(url)
-    weather_data = response.json()
+    weather_info = None
+    try:
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+        weather_data = response.json()
 
-    weather_main = weather_data['weather'][0]['main'] 
-    temp = weather_data['main']['temp']
+        weather_info = {
+            'main': weather_data['weather'][0]['main'],
+            'temp': weather_data['main']['temp'],
+        }
+
+    except Exception as e:
+        weather_info = None
+        messages.error(request, "Weather data not available right now.")
 
     context = {
         'user': request.user,
         'city': city,
-        'weather': {
-            'main': weather_main,
-            'temp': temp,
-        }
+        'weather': weather_info
     }
     return render(request, 'plant/notifications.html', context)
 
