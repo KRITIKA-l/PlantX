@@ -4,7 +4,7 @@ from .models import userplant
 class UserPlantForm(forms.ModelForm):
     class Meta:
         model = userplant
-        exclude = ['user']
+        exclude = ['user', 'deleted_at','deleted']
 
         widgets = {
             'planted_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
@@ -18,19 +18,12 @@ class UserPlantForm(forms.ModelForm):
             'custom_image': 'Upload Plant Image',
             'location': 'Location (Indoor/Outdoor)',
             'sunlight': 'Sunlight Level',
-            'humidity': 'Humidity Level',
-            'temperature_preference': 'Preferred Temperature',
             'planted_date': 'Date Planted',
             'last_watered': 'Last Watered On',
             'watering_frequency': 'Watering Frequency (days)',
-            'water_reminder': 'Enable Water Reminders?',
             'last_fertilized': 'Last Fertilized On',
             'fertilizing_frequency': 'Fertilizing Frequency (days)',
-            'height_cm': 'Plant Height (cm)',
-            'is_flowering': 'Is Flowering?',
-            'is_fruiting': 'Is Fruiting?',
-            'current_status': 'Plant Health Status',
-            'source': 'Plant Source',
+            'is_flowering_and_fruiting': 'Flowering or Fruiting?',
             'notes': 'Additional Notes',
         }
     def __init__(self, *args, **kwargs):

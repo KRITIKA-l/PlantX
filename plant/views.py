@@ -12,6 +12,8 @@ from django.conf import settings
 import requests 
 from django.utils.timezone import localdate
 from django.contrib import messages
+from datetime import timedelta
+from django.utils.timezone import now
 
 # Create your views here.
 def home(request):
@@ -118,7 +120,7 @@ def findproducts(request):
         else:
             return render(request, 'plant/search.html', {'warning': "No Record Found"})
         
-@login_required
+@login_required(login_url='loginuser')
 def notifications(request):
     user_profile = userprofile.objects.get(user=request.user)
     city = user_profile.user_city
@@ -148,7 +150,7 @@ def notifications(request):
     }
     return render(request, 'plant/notifications.html', context)
 
-@login_required
+@login_required(login_url='loginuser')
 def profile(request):
     profile = get_object_or_404(userprofile, user=request.user)
 
@@ -161,7 +163,7 @@ def profile(request):
 
     return render(request, 'plant/profile.html', {'user': request.user,'profile': profile})
 
-@login_required
+@login_required(login_url='loginuser')
 def update_last_watered(request, plant_id):
     if request.method == 'POST':
         plant = get_object_or_404(userplant, id=plant_id, user=request.user)
@@ -171,7 +173,7 @@ def update_last_watered(request, plant_id):
         planthistory.objects.create(plant=plant, date=today, action='watered')
         return redirect('myplantinfo', userplant_id=plant.id)
 
-@login_required
+@login_required(login_url='loginuser')
 def update_last_fertilized(request, plant_id):
     if request.method == 'POST':
         plant = get_object_or_404(userplant, id=plant_id, user=request.user)
@@ -181,7 +183,7 @@ def update_last_fertilized(request, plant_id):
         planthistory.objects.create(plant=plant, date=today, action='fertilized')
         return redirect('myplantinfo', userplant_id=plant.id)
 
-@login_required
+@login_required(login_url='loginuser')
 def update_custom_date(request, plant_id):
     if request.method == 'POST':
         custom_date = request.POST.get('custom_date')
@@ -205,3 +207,31 @@ def history(request,userplant_id):
     plant = get_object_or_404(userplant, id=userplant_id, user=request.user)
     history = plant.history.all().order_by('-timestamp')
     return render(request, 'plant/history.html', {'plant': plant, 'history': history})
+
+@login_required(login_url='loginuser')
+def removeplant(request, plant_id):
+    plant = get_object_or_404(userplant, id=plant_id, user=request.user,deleted=False)
+    plant.soft_delete()
+    return redirect('myplants')
+
+@login_required(login_url='loginuser')
+def deleted_plants(request):
+    recent_deleted = userplant.objects.filter(deleted=True,deleted_at__gte=now() - timedelta(days=7))
+    return render(request, 'plant/recentlydeleted.html', {'recent_deleted': recent_deleted})
+
+@login_required(login_url='loginuser')
+def restoreplant(request, plant_id):
+    plant = get_object_or_404(userplant, id=plant_id, user=request.user, deleted_at__isnull=False)
+    plant.deleted_at = None 
+    plant.save()
+    return redirect('deleted_plants')
+
+def editplant(request, plant_id):
+    plant = get_object_or_404(userplant, id=plant_id, user=request.user)
+    if request.method == 'POST':
+        plant.nickname = request.POST.get('nickname', plant.nickname)
+        plant.watering_frequency = request.POST.get('watering_frequency', plant.watering_frequency)
+        plant.fertilizing_frequency = request.POST.get('fertilizing_frequency', plant.fertilizing_frequency)
+        plant.notes = request.POST.get('notes', plant.notes)
+        plant.save()
+        return redirect('myplantinfo', plant_id)

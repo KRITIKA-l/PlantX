@@ -130,10 +130,21 @@
             padding: 8px;
             display: block;
             border-radius: 5px;
+            color: black !important;
         }
         .profilebar.show 
         {
             transform: translateX(0%);
+        }
+        .profilebar a:hover 
+        {
+            background: #e6ffe6;
+            color: black !important;
+        }
+        .profilebar .btn:hover 
+        {
+            transform: scale(1.02);
+            transition: transform 0.2s ease-in-out;
         }
     </style>
 </head>
@@ -179,10 +190,10 @@
                     <div class="mb-3 text-dark fw-bold fs-6">👋 Welcome, {{ user.username }}</div>
                     <ul class="list-unstyled">
                         <li class="mb-2">
-                            <a href="{% url 'profile' %}" class="btn btn-outline-success btn-sm w-100 text-start">Profile</a>
+                            <a href="{% url 'profile' %}" class="btn btn-success w-100 text-start"><i class="bi bi-person"></i> Profile</a>
                         </li>
                         <li class="mb-2">
-                            <a href="{% url 'addplant' %}" class="btn btn-outline-success btn-sm w-100 text-start">➕ Add Plants</a>
+                            <a href="{% url 'addplant' %}" class="btn btn-outline-success w-100 text-start"><i class="bi bi-plus-circle"></i> Add Plants</a>
                         </li>
                         {% if userplant %}
                             {% for plant in userplant %}
@@ -197,7 +208,10 @@
                         {% endif %}
                     </ul>
                 </div>
-                <a href="{% url 'logoutuser' %}" class="btn btn-outline-danger">🚪 Logout</a>       
+                <div>
+                    <a class="btn btn-outline-secondary mb-2 w-100 text-start" href="{% url 'deleted_plants' %}">Recently Deleted <i class="bi bi-archive"></i></a>
+                    <a href="{% url 'logoutuser' %}" class="btn btn-outline-danger w-100 text-start">🚪 Logout</a>   
+                </div>    
                 {% else %}
                 <div>
                     <form action="{% url 'loginuser' %}" method="get" class="mb-2">
@@ -210,6 +224,7 @@
     </div>
 
     <script>
+        // Function to toggle the sidebar and close the profilebar if open
         function displaysidebar()
         {
             const profilebar=document.getElementById('profilebar')
@@ -217,6 +232,7 @@
             sidebar.classList.toggle('show');
             profilebar.classList.remove('show');
         }
+        // Function to toggle the profilebar and close the sidebar if open
         function infobtn()
         {
             const profilebar=document.getElementById('profilebar')
@@ -227,6 +243,8 @@
         }
 
         const currentPath = window.location.pathname.replace(/\/$/, '');
+
+        // Highlight the current page link in the sidebar
         document.querySelectorAll('.sidebar a').forEach(link => 
         {
             const linkPath = link.getAttribute('href').replace(/\/$/, '');
@@ -236,6 +254,7 @@
             }
         });
 
+        // Highlight the current page link in the profilebar
         document.querySelectorAll('.profilebar a').forEach(link => 
         {
             const linkPath = link.getAttribute('href').replace(/\/$/, '');
@@ -253,6 +272,7 @@
             const sidebar = document.getElementById('sidebar');
             const togglebtn = document.getElementById('togglebtn');
 
+            // If profilebar is open and click is outside, close it
             if (profilebar.classList.contains('show')) 
             {
            
@@ -261,6 +281,7 @@
                     profilebar.classList.remove('show');
                 }
             }
+            // If sidebar is open and click is outside, close it
             if (sidebar.classList.contains('show')) 
             {
            
@@ -269,6 +290,13 @@
                     sidebar.classList.remove('show');
                 }
             }
+        });
+
+        // Close sidebar and profilebar on scroll
+        window.addEventListener('scroll', function () 
+        {
+            document.getElementById('profilebar').classList.remove('show');
+            document.getElementById('sidebar').classList.remove('show');
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>

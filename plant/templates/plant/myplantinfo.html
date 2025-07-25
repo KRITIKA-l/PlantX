@@ -16,7 +16,12 @@
 
     <div class="container mt-2 p-3">
         <div class="alert alert-success text-center">
-            <h2>{{ plant.nickname|default:"Unnamed Plant" }}</h2>
+            <h2>
+                {{ plant.nickname|default:"Unnamed Plant" }}
+                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editModal">
+                    <i class="bi bi-pencil"></i>
+                </button>
+            </h2>   
         </div>
 
         <div class="row">
@@ -24,50 +29,55 @@
                 {% if plant.custom_image %}
                     <img src="{{ plant.custom_image.url }}" class="img-fluid rounded" alt="{{ plant.nickname }}">
                 {% else %}
-                    <img src="{% static 'plant/bg4.jpg' %}" class="card-img-top rounded" alt="{{ plant.nickname }}" style="height: 550px; object-fit: cover;">
+                    <img src="{% static 'plant/bg4.jpg' %}" class="card-img-top rounded" alt="{{ plant.nickname }}" style="height: 440px; object-fit: cover;">
                 {% endif %}
-
-                <div class="row mt-2">
-                    <form class="col-md-6 mt-2" method="post" action="{% url 'update_last_watered' plant.id %}" class="mt-2">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-success">Update Last Watered (Today)</button>
-                    </form>
-
-                    <form class="col-md-6 mt-2 mb-2" method="post" action="{% url 'update_last_fertilized' plant.id %}" class="mt-2">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-success"> Update Last Fertilized(Today)</button>
-                    </form>
-                </div>
-
-                
-                <form method="post" action="{% url 'update_custom_date' plant.id %}">
-                    {% csrf_token %}
-                    <div class=' mt-3'>
-                        <label for="custom_date">Select Date:</label>
-                        <input type="date" name="custom_date" id="custom_date" class="form-control mb-3" required>
-
-                        <button  type="submit" name="action" value="watered" class="btn btn-outline-secondary">Set Watering Date</button>
-                        <button  type="submit" name="action" value="fertilized" class="btn btn-outline-secondary">Set Fertilizing Date</button>
-                    </div>
-                </form>
-                
             </div>
+
             <div class="col-md-6 mt-2">
                 <ul class="list-group">
                     <li class="list-group-item"><strong>Type:</strong> {{ plant.plant_type }}</li>
                     <li class="list-group-item"><strong>Sunlight:</strong> {{ plant.sunlight_available }}</li>
-                    <li class="list-group-item"><strong>Humidity:</strong> {{ plant.humidity }}</li>
-                    <li class="list-group-item"><strong>Temperature:</strong> {{ plant.temperature_preference }}</li>
                     <li class="list-group-item"><strong>Watering Freq:</strong> {{ plant.watering_frequency }} days</li>
-                    <li class="list-group-item"><strong>Last Watered:</strong> {{ plant.last_watered }}</li>
+                    <li class="list-group-item">
+                        <strong>Last Watered:</strong> {{ plant.last_watered }}
+                        <div class="d-flex align-items-center gap-2 mt-2 flex-wrap">
+                            <form method="post" action="{% url 'update_last_watered' plant.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-success">Today</button>
+                            </form>
+
+                            <form method="post" action="{% url 'update_custom_date' plant.id %}" class="d-flex align-items-center gap-2">
+                                {% csrf_token %}
+                                <input type="date" name="custom_date" class="form-control w-auto" required>
+                                <button type="submit" name="action" value="watered" class="btn btn-outline-secondary">
+                                    Set Date
+                                </button>
+                            </form>
+                        </div>
+                    </li>
+
                     <li class="list-group-item"><strong>Fertilizing Freq:</strong> {{ plant.fertilizing_frequency }} days</li>
-                    <li class="list-group-item"><strong>Last Fertilized:</strong> {{ plant.last_fertilized }}</li>
-                    <li class="list-group-item"><strong>Height:</strong> {{ plant.height_cm }} cm</li>
-                    <li class="list-group-item"><strong>Flowering:</strong> {{ plant.is_flowering|yesno:"Yes,No" }}</li>
-                    <li class="list-group-item"><strong>Fruiting:</strong> {{ plant.is_fruiting|yesno:"Yes,No" }}</li>
-                    <li class="list-group-item"><strong>Status:</strong> {{ plant.current_status }}</li>
-                    <li class="list-group-item"><strong>Source:</strong> {{ plant.source }}</li>
-                    <li class="list-group-item"><strong>Notes:</strong> {{ plant.notes }}</li>
+
+                    <li class="list-group-item">
+                        <strong>Last Fertilized:</strong> {{ plant.last_fertilized }}
+                        <div class="d-flex align-items-center gap-2 mt-2 flex-wrap">
+                            <form method="post" action="{% url 'update_last_fertilized' plant.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-success">Today</button>
+                            </form>
+
+                            <form method="post" action="{% url 'update_custom_date' plant.id %}" class="d-flex align-items-center gap-2">
+                                {% csrf_token %}
+                                <input type="date" name="custom_date" class="form-control w-auto" required>
+                                <button type="submit" name="action" value="fertilized" class="btn btn-outline-secondary">
+                                    Set Date
+                                </button>
+                            </form>
+                        </div>
+                    </li>
+
+                    <li class="list-group-item"><strong>Flowering And Fruiting:</strong> {{ plant.is_flowering|yesno:"Yes,No" }}</li>
+                    <li class="list-group-item"><strong>Notes:</strong> {{ plant.notes|default:"No notes added yet." }}</li>
                 </ul>
                 <div class="d-flex justify-content-center flex-wrap gap-2 mt-3">
                     <a href="{% url 'history' userplant_id=plant.id %}" class="btn btn-outline-primary mt-3">
@@ -80,10 +90,46 @@
             </div>
         </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="editModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Plant</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form method="post" action="{% url 'editplant' plant.id %}">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="mb-2">
+                                <label>Nickname</label>
+                                <input type="text" name="nickname" class="form-control" value="{{ plant.nickname }}">
+                            </div>
+                            <div class="mb-2">
+                                <label>Watering Frequency e.g., every 3 days</label>
+                                <input type="number" name="watering_frequency" class="form-control" value="{{ plant.watering_frequency }}">
+                            </div>
+                            <div class="mb-2">
+                                <label>Fertilizing Frequency e.g., every 3 days</label>
+                                <input type="number" name="fertilizing_frequency" class="form-control" value="{{ plant.fertilizing_frequency }}">
+                            </div>
+                            <div class="mb-2">
+                                <label>Notes</label>
+                                <textarea name="notes" class="form-control">{{ plant.notes }}</textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         <a href="{% url 'myplants' %}" class="btn btn-success mt-3">
             <i class="bi bi-arrow-left-circle"></i> Back to My Plants
         </a>
+
     </div>
     {% include 'plant/footer.html' %}
 
