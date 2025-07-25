@@ -15,9 +15,9 @@
             <h3>🌱Recently Deleted Plants🌱</h3>
             <p>Recently Deleted (last 7 days)</p>
         </div>
-        {% if deleted_plants %}
+        {% if recent_deleted %}
             <div class="container row flex-grow-1">
-                {% for plant in deleted_plants %}
+                {% for plant in recent_deleted %}
                     <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
                         <a href="{% url 'myplantinfo' plant.id %}" class="text-decoration-none text-dark">
                             <div class="card h-100 shadow-sm">

@@ -222,6 +222,7 @@ def deleted_plants(request):
 @login_required(login_url='loginuser')
 def restoreplant(request, plant_id):
     plant = get_object_or_404(userplant, id=plant_id, user=request.user, deleted_at__isnull=False)
+    plant.deleted = False
     plant.deleted_at = None 
     plant.save()
     return redirect('deleted_plants')
