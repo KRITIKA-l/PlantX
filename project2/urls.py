@@ -47,8 +47,7 @@ urlpatterns = [
     path('removeplant/<int:plant_id>/', views.removeplant, name='removeplant'),
     path('deletedplants/', views.deleted_plants, name='deleted_plants'),
     path('restoreplant/<int:plant_id>/', views.restoreplant, name='restoreplant'),
-    path('editplant/<int:plant_id>/', views.editplant, name='editplant'),
-
+    path('editplant/<int:plant_id>/', views.editplant, name='editplant'),    
 ]
 
 if settings.DEBUG:
