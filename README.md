@@ -6,3 +6,4 @@ Add your plants, get care reminders, and explore smart tips — all in one beaut
 
 🪴 Care smarter. Grow greener.
 
+
